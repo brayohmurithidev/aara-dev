@@ -8,19 +8,12 @@ import React, { useState } from "react";
 import { Image } from "expo-image";
 
 import { StatusBar } from "expo-status-bar";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { Link } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as Yup from "yup";
-import {
-  Button,
-  IconButton,
-  MD3Colors,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Button, Text, TextInput } from "react-native-paper";
 import { monoBlack } from "@/constants/images";
 import { Colors } from "@/constants/Colors";
 import Divider from "@/components/divider";
@@ -36,7 +29,7 @@ const validationSchema = Yup.object({
 });
 
 const SignIn = () => {
-  const { top, bottom } = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   // const headerHeight = useHeaderHeight();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -170,18 +163,8 @@ const SignIn = () => {
                 /> */}
 
                 <Divider text="or login with" />
+                <GoogleSigninButton />
 
-                {/* <GoogleSigninButton /> */}
-
-                <IconButton
-                  mode="contained"
-                  icon="google"
-                  iconColor={MD3Colors.primary50}
-                  size={24}
-                  onPress={() => console.log("Pressed")}
-                />
-
-                {/*<GoogleSignInButton />*/}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text>Don't have an account? </Text>
                   <Link href="/">
