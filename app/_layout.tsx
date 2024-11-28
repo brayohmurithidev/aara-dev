@@ -1,15 +1,29 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import {Slot, Stack} from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
-import { Button, DefaultTheme, PaperProvider } from "react-native-paper";
-import {AuthProvider} from "@/context/AuthProvider.tsx";
+import { AuthProvider, useAuth } from "@/context/AuthProvider.tsx";
+import { RootSiblingParent } from "react-native-root-siblings";
+import { DefaultTheme, PaperProvider } from "react-native-paper";
+import { StatusBar } from "expo-status-bar";
 
-
+// Custom themes
+const customTheme = {
+  ...DefaultTheme, // Start with the default theme
+  roundness: 8, // Adjust roundness for components
+  colors: {
+    ...DefaultTheme.colors, // Extend default colors
+    primary: "#6F5C50", // Custom primary color
+    accent: "#E3F1B0", // Custom accent color
+    background: "#F2EFED", // Background color
+    surface: "#ffffff", // Surface color
+    text: "#000000", // Text color
+  },
+};
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -35,30 +49,51 @@ export default function RootLayout() {
     if (error) throw error;
   }, [error]);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+  // useEffect(() => {
+  //   if (loaded) {
+  //     SplashScreen.hideAsync();
+  //   }
+  // }, [loaded]);
 
   if (!loaded) {
     return null;
   }
 
   return (
-    // <PaperProvider>
+    <PaperProvider theme={customTheme}>
       <AuthProvider>
         <RootLayoutNav />
       </AuthProvider>
-
-    // </PaperProvider>
+    </PaperProvider>
   );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const { initialized, session } = useAuth();
+
+  useEffect(() => {
+    if (!initialized) return;
+    if (session) {
+      router.replace("/(auth)/");
+    } else if (!session) {
+      router.replace("/entry");
+    }
+
+    SplashScreen.hideAsync();
+  }, [initialized, session]);
 
   return (
-  <Slot />
+    <RootSiblingParent>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="entry" />
+        <Stack.Screen name="login" />
+      </Stack>
+      <StatusBar backgroundColor="transparent" />
+    </RootSiblingParent>
   );
 }
