@@ -1,29 +1,15 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import {Slot, Stack} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import { Button, DefaultTheme, PaperProvider } from "react-native-paper";
+import {AuthProvider} from "@/context/AuthProvider.tsx";
 
-// EXTEND THEME COLORS
-const theme = {
-  ...DefaultTheme,
-  // Specify custom property
-  myOwnProperty: true,
-  // Specify custom property in nested object
-  colors: {
-    ...DefaultTheme.colors,
-    myOwnColor: "#BADA55",
-  },
-  component: {
-    Button: {
-      backgroundColor: "red",
-    },
-  },
-};
+
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -32,7 +18,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -61,7 +47,10 @@ export default function RootLayout() {
 
   return (
     // <PaperProvider>
-    <RootLayoutNav />
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+
     // </PaperProvider>
   );
 }
@@ -70,10 +59,6 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-    </Stack>
+  <Slot />
   );
 }
