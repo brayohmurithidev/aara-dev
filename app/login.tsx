@@ -13,15 +13,12 @@ import { Link } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as Yup from "yup";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Portal, Snackbar, Text, TextInput } from "react-native-paper";
 import { monoBlack } from "@/constants/images";
 import { Colors } from "@/constants/Colors";
 import Divider from "@/components/divider";
-import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
-// import {loginEmailPassword} from "@/firebase/firebase.fns";
-// import { useSupabase } from "@/context/auth";
-
-// import Toast from "react-native-root-toast";
+import { supabase } from "@/config/initSupabase.ts";
+import GoogleLogin from "@/components/GoogleLogin.tsx";
 
 const validationSchema = Yup.object({
   identifier: Yup.string().required("Email is required"),
@@ -36,26 +33,31 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   // const { signInWithPassword } = useSupabase();
 
-  // const handleSignIn = async (values: {
-  //   identifier: string;
-  //   password: string;
-  // }) => {
-  //   setLoading(true);
-  //   const { error } = await supabase.auth.signInWithPassword({
-  //     email: values?.identifier,
-  //     password: values?.password,
-  //   });
-  //   if (error) {
-  //     // Alert.alert(error?.message);
-  //     Toast.show(error?.message, {
-  //       duration: Toast.durations.LONG,
-  //       position: Toast.positions.TOP,
-  //       backgroundColor: Colors.red,
-  //     });
-  //     console.log("Logging in error", error);
-  //   }
-  //   setLoading(false);
-  // };
+  const handleSignIn = async (values: {
+    identifier: string;
+    password: string;
+  }) => {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values?.identifier,
+      password: values?.password,
+    });
+    if (error) {
+      // Alert.alert(error?.message);
+      // Toast.show(error?.message, {
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.TOP,
+      //   backgroundColor: Colors.red,
+      // });
+      console.log("Logging in error", error?.message);
+      setErrorMessage(
+        error?.message === "Invalid login credentials"
+          ? "Wrong Email or password"
+          : error?.message,
+      );
+    }
+    setLoading(false);
+  };
 
   return (
     <>
@@ -80,7 +82,7 @@ const SignIn = () => {
           <Formik
             initialValues={{ identifier: "", password: "" }}
             validationSchema={validationSchema}
-            onSubmit={() => console.log("trying submit")}
+            onSubmit={handleSignIn}
           >
             {({
               handleBlur,
@@ -92,30 +94,43 @@ const SignIn = () => {
             }) => (
               <>
                 {errorMessage && (
-                  <View
-                    style={{
-                      marginBottom: 20,
-                      backgroundColor: "red",
-                      width: "100%",
-                      padding: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Text style={{ color: Colors.baseWhite }}>
+                  <Portal>
+                    <Snackbar
+                      visible={errorMessage}
+                      onDismiss={() => setErrorMessage(null)}
+                    >
                       {errorMessage}
-                    </Text>
-                  </View>
+                    </Snackbar>
+                  </Portal>
+
+                  // <View
+                  //   style={{
+                  //     marginBottom: 20,
+                  //     backgroundColor: "red",
+                  //     width: "100%",
+                  //     padding: 10,
+                  //     justifyContent: "center",
+                  //     alignItems: "center",
+                  //     borderRadius: 8,
+                  //   }}
+                  // >
+                  //   <Text style={{ color: Colors.baseWhite }}>
+                  //     {errorMessage}
+                  //   </Text>
+                  // </View>
                 )}
                 <View style={styles.formControl}>
                   <TextInput
+                    mode="outlined"
+                    label="Email"
                     placeholder="Enter username/email"
-                    style={styles.input}
+                    // style={styles.input}
                     onChangeText={handleChange("identifier")}
                     onBlur={handleBlur("identifier")}
                     onFocus={() => setErrorMessage(null)}
+                    error={touched.identifier && errors.identifier}
                     value={identifier}
+                    activeOutlineColor={Colors.ecru800}
                   />
                   {touched.identifier && errors.identifier && (
                     <Text style={styles.errorText}>{errors.identifier}</Text>
@@ -123,12 +138,15 @@ const SignIn = () => {
                 </View>
                 <View style={styles.formControl}>
                   <TextInput
+                    mode="outlined"
+                    label="Password"
                     placeholder="Enter your password"
-                    style={styles.input}
+                    // style={styles.input}
                     secureTextEntry={!showPassword}
                     onChangeText={handleChange("password")}
                     onBlur={handleBlur("password")}
                     onFocus={() => setErrorMessage(null)}
+                    error={touched.password && errors.password}
                     value={password}
                   />
 
@@ -142,8 +160,12 @@ const SignIn = () => {
                 </Link>
                 <Button
                   mode="contained"
-                  buttonColor="#000"
+                  // buttonColor="#000"
+                  // textColor="#fff"
                   style={{ width: "100%" }}
+                  onPress={handleSubmit}
+                  // disabled={identifier === "" || password === ""}
+                  loading={loading}
                 >
                   Login
                 </Button>
@@ -163,7 +185,7 @@ const SignIn = () => {
                 /> */}
 
                 <Divider text="or login with" />
-                <GoogleSigninButton />
+                <GoogleLogin />
 
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text>Don't have an account? </Text>
@@ -185,7 +207,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    marginBottom: 16,
+    // marginBottom: 16,
   },
   onboardWrapper: {
     alignItems: "center",
