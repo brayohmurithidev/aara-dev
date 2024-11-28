@@ -60,9 +60,9 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider>
-      <RootLayoutNav />
-    </PaperProvider>
+    // <PaperProvider>
+    <RootLayoutNav />
+    // </PaperProvider>
   );
 }
 
