@@ -10,7 +10,6 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundlerIdentifier": "space.aara.aara",
       "bundleIdentifier": "space.aara.aara"
     },
     "android": {
@@ -28,18 +27,25 @@
     "plugins": [
       "expo-router",
       [
+        "expo-font",
+        {
+          "fonts": ["assets/fonts/WorkSans-Regular.ttf"]
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#E3F1B0",
           "image": "./assets/images/splash.png",
           "imageWidth": 500,
           "enableFullScreenImage_legacy": true
-        }
-      ],
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.1:388252971274:ios:022e30b93b8c70fc180af3"
         }
       ]
     ],
