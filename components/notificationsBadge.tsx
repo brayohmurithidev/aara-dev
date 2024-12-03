@@ -18,17 +18,17 @@ const NotificationsBadge = () => {
   //       setUnreadCount(newUnreadCount);
   //     }
   //   } catch (error) {
-  //     console.error("Failed to fetch unread messages:", error);
+  //     console.error("Failed to fetch unread (messages):", error);
   //   }
   // };
   //
   // useEffect(() => {
-  //   // Fetch unread messages initially
+  //   // Fetch unread (messages) initially
   //   if (client) {
   //     fetchUnreadMessage();
   //   }
   //
-  //   // Define the event listener for new messages
+  //   // Define the event listener for new (messages)
   //   const handleNewMessage = (event) => {
   //     if (event.total_unread_count) {
   //       fetchUnreadMessage();

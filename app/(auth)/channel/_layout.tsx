@@ -11,7 +11,7 @@ const ChannelLayout = () => {
           headerBackVisible: false,
           headerTitleAlign: "left",
           // headerLeft: () => (
-          //   <Pressable onPress={() => router.replace("/(messages)")}>
+          //   <Pressable onPress={() => router.replace("/((messages))")}>
           //     <Feather name="chevron-left" size={24} color="gray" />
           //   </Pressable>
           // ),

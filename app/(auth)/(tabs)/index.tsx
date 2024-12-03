@@ -30,7 +30,7 @@ const colors = [
 ];
 let lastColor: string | null = null;
 
-const Home = () => {
+const Index = () => {
   const { signOut, user: currentUser } = useAuth();
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
@@ -400,4 +400,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Index;

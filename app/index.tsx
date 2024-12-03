@@ -31,6 +31,13 @@ const EntryFile = () => {
         <Text variant="titleSmall">Community through fitness</Text>
         <View style={{ bottom: 60, position: "absolute", width: "80%" }}>
           <Button
+            mode={"contained"}
+            onPress={() => router.push("/(auth)/(tabs)")}
+            style={{ marginBottom: 24 }}
+          >
+            Home Screen
+          </Button>
+          <Button
             mode="contained"
             buttonColor="black"
             style={{ marginBottom: 20 }}

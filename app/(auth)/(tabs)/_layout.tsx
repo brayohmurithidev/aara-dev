@@ -1,44 +1,75 @@
-import { Text } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { forwardRef } from "react";
-import { Pressable, View } from "react-native";
-import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-import { TabList, Tabs, TabTrigger } from "expo-router/ui";
-
-const TabButton = forwardRef<View, BottomTabBarButtonProps>((props, ref) => {
-  return (
-    <Pressable ref={ref} {...props}>
-      <View>
-        <Ionicons name={props.iconName} color="#000" size={16} />
-        <Text>{props?.tabName}</Text>
-      </View>
-    </Pressable>
-  );
-});
+import React from "react";
+import { Tabs, usePathname } from "expo-router";
+import { Feather } from "@expo/vector-icons";
+import CustomTabBar from "@/components/CustomTabBar.tsx";
 
 const TabsLayout = () => {
-  const { top, bottom } = useSafeAreaInsets();
   return (
-    <Tabs>
-      <TabList>
-        <TabTrigger name="home" href="/home" />
-      </TabList>
+    <Tabs
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarStyle: {
+          display: ["profileUpdate", "matchSearch"].includes(usePathname())
+            ? "none"
+            : "flex",
+          backgroundColor: "#E1DAD5",
+        },
+        headerStyle: {
+          backgroundColor: "#F2EFED",
+        },
+        tabBarHideOnKeyboard: true,
+      })}
+      tabBar={(props) => <CustomTabBar {...props} />}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <Feather name="home" size={28} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(workout)"
+        options={{
+          title: "Workout",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Feather name="dribbble" size={28} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="(matches)"
+        options={{
+          title: "Matches",
+          tabBarHideOnKeyboard: true,
+          tabBarIcon: ({ color }) => (
+            <Feather name="users" size={28} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(messages)"
+        options={{
+          title: "Messages",
+          tabBarIcon: ({ color }) => (
+            <Feather name="message-circle" size={28} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(profile)"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <Feather name="user" size={28} color={color} />
+          ),
+        }}
+      />
     </Tabs>
-    // <Tabs screenOptions={{ headerShown: false }}>
-    //   {/*<TabSlot style={{ flex: 1, marginTop: top + 20 }} />*/}
-    //   {/*<TabList style={{ display: "absolute", bottom, left: 16 }}>*/}
-    //   {/*  /!* Trigger for Home *!/*/}
-    //   {/*  <TabTrigger name="index" href="/(auth)/(tabs)/" asChild>*/}
-    //   {/*    <TabButton tabName="Home" iconName="home" />*/}
-    //   {/*  </TabTrigger>*/}
-    //
-    //   {/*  /!* Trigger for Workout *!/*/}
-    //   {/*  <TabTrigger name="workout" href="/(auth)/(tabs)/workout" asChild>*/}
-    //   {/*    <Text>Workout</Text>*/}
-    //   {/*  </TabTrigger>*/}
-    //   {/*</TabList>*/}
-    // </Tabs>
   );
 };
 

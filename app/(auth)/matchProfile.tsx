@@ -11,7 +11,7 @@ import { ImageBackground } from "expo-image";
 import { profileAvatar, workoutLadies } from "@/constants/images.ts";
 import { StatusBar } from "expo-status-bar";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/profile.tsx";
+// import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/index.tsx";
 import { FlashList } from "@shopify/flash-list";
 import FitnessSpots from "@/components/fitnessSpots.tsx";
 import { supabase } from "@/config/initSupabase.ts";
@@ -19,6 +19,7 @@ import Toast from "react-native-root-toast";
 import { useAuth } from "@/context/AuthProvider.tsx";
 import * as Location from "expo-location";
 import { Avatar, Button, Text } from "react-native-paper";
+import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/(profile)/index.tsx";
 
 const getGymsNearby = async () => {
   // Fetch user's location and nearby gyms
