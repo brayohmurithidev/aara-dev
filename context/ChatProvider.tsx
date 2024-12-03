@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { StreamChat } from "stream-chat";
-import { Chat, OverlayProvider } from "stream-chat-expo";
+import { Chat, OverlayProvider, Streami18n } from "stream-chat-expo";
 import { ImageBackground } from "expo-image";
 import { splashImage } from "@/constants/images";
 import { ActivityIndicator } from "react-native";
@@ -12,6 +12,7 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   const { user } = useAuth();
   const [chatClient, setChatClient] = useState<StreamChat | null>(null);
   const clientRef = useRef<StreamChat | null>(null); // Keep a single instance of StreamChat.
+  const i18nInstance = new Streami18n();
 
   useEffect(() => {
     if (!user) return;
@@ -93,7 +94,9 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <OverlayProvider>
-      <Chat client={chatClient}>{children}</Chat>
+      <Chat client={chatClient} i18nInstance={i18nInstance}>
+        {children}
+      </Chat>
     </OverlayProvider>
   );
 };

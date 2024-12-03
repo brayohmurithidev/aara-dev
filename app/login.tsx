@@ -141,6 +141,12 @@ const SignIn = () => {
                     mode="outlined"
                     label="Password"
                     placeholder="Enter your password"
+                    right={
+                      <TextInput.Icon
+                        icon={showPassword ? "eye-off" : "eye"}
+                        onPress={() => setShowPassword(!showPassword)}
+                      />
+                    }
                     // style={styles.input}
                     secureTextEntry={!showPassword}
                     onChangeText={handleChange("password")}

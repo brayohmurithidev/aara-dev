@@ -6,7 +6,7 @@ import {
 import { useAuth } from "@/context/AuthProvider.tsx";
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useCallback, useLayoutEffect } from "react";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { Colors } from "@/constants/Colors.ts";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/config/initSupabase.ts";

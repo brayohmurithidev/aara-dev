@@ -8,6 +8,7 @@
     "scheme": "aara-dev",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "space.aara.aara"
@@ -30,6 +31,12 @@
         "expo-font",
         {
           "fonts": ["assets/fonts/WorkSans-Regular.ttf"]
+        }
+      ],
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion"
         }
       ],
       [

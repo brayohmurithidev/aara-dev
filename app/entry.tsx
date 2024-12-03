@@ -34,7 +34,7 @@ const EntryFile = () => {
             mode="contained"
             buttonColor="black"
             style={{ marginBottom: 20 }}
-            onPress={() => router.push("/")}
+            onPress={() => router.push("/introduction")}
           >
             SIGN UP
           </Button>

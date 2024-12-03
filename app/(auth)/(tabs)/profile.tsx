@@ -123,7 +123,7 @@ const UserProfile = () => {
         }
         size={40}
       />
-      <Text variant="titleMedium" style={{ fontSize: 12 }}>
+      <Text variant="titleSmall" style={{ fontSize: 12 }}>
         {item?.name}
       </Text>
     </TouchableOpacity>
@@ -237,7 +237,7 @@ const UserProfile = () => {
                 </Button>
               </View>
               {/*  MAIN CONTENT*/}
-              <View style={{ marginTop: 75 + 24 }}>
+              <View style={{ marginTop: 40 }}>
                 <Text variant="titleMedium">{user?.name}</Text>
                 <View
                   style={{
@@ -259,7 +259,7 @@ const UserProfile = () => {
                 {/*    BIO*/}
                 {user?.bio && (
                   <View style={{ marginBottom: 28 }}>
-                    <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                    <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                       Bio
                     </Text>
                     <Text variant="bodyMedium">{user?.bio}</Text>
@@ -276,7 +276,7 @@ const UserProfile = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                      <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                         Friends
                       </Text>
                       {/*<Link href="/profileUpdate">Show all</Link>*/}
@@ -294,7 +294,7 @@ const UserProfile = () => {
                 {/*    GOALS BADGES*/}
                 {user?.badges && (
                   <View style={{ marginBottom: 28 }}>
-                    <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                    <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                       Goal Badges
                     </Text>
                     <Text variant="bodyMedium">
@@ -305,8 +305,8 @@ const UserProfile = () => {
                 )}
                 {/*    Gender*/}
                 {user?.gender && (
-                  <View style={{ marginBottom: 28 }}>
-                    <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                  <View style={{ marginVertical: 28 }}>
+                    <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                       Gender
                     </Text>
                     <Text
@@ -326,7 +326,7 @@ const UserProfile = () => {
                 {/*    FItness level*/}
                 {user?.fitness_level && (
                   <View style={{ marginBottom: 28 }}>
-                    <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                    <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                       Fitness Level
                     </Text>
                     <Text
@@ -345,7 +345,7 @@ const UserProfile = () => {
                 <View style={{ marginBottom: 28 }}>
                   {user?.availability && (
                     <>
-                      <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                      <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                         Availability
                       </Text>
                       <View
@@ -377,7 +377,7 @@ const UserProfile = () => {
                   {/*    Workout type*/}
                   {user?.workout_type && (
                     <View style={{ marginBottom: 28, marginTop: 10 }}>
-                      <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                      <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                         Workout Type
                       </Text>
                       <Text
@@ -396,7 +396,7 @@ const UserProfile = () => {
                   {/*    WORKOUT STYLE*/}
                   {user?.workout_style && (
                     <View style={{ marginBottom: 28, marginTop: 10 }}>
-                      <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                      <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                         Workout Style
                       </Text>
                       <Text
@@ -415,7 +415,7 @@ const UserProfile = () => {
                   {/*    Fitness Goal*/}
                   {user?.fitness_goals && (
                     <>
-                      <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                      <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                         Fitness Goals
                       </Text>
                       <View
@@ -448,13 +448,13 @@ const UserProfile = () => {
                   {/*    Prompt*/}
                   {user?.prompt && (
                     <View style={{ marginBottom: 28, marginTop: 10 }}>
-                      <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+                      <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                         Prompt
                       </Text>
                       {user?.prompt?.map((p: any, i: any) => (
                         <View key={i}>
                           <Text
-                            variant="titleMedium"
+                            variant="titleSmall"
                             size="xs"
                             style={{ marginBottom: 10, fontWeight: "900" }}
                           >
