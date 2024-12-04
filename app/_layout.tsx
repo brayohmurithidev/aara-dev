@@ -1,4 +1,4 @@
-import { router, Slot, SplashScreen } from "expo-router";
+import { router, Slot } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "@/context/AuthProvider.tsx";
 import { RootSiblingParent } from "react-native-root-siblings";
@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 import { DefaultTheme, PaperProvider } from "react-native-paper";
 import configureFonts from "react-native-paper/src/styles/fonts.tsx";
+import * as SplashScreen from "expo-splash-screen";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,11 @@ const customTheme = {
 };
 
 SplashScreen.preventAutoHideAsync();
+
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 const InitialLayout = () => {
   const { session, initialized } = useAuth();

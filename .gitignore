@@ -25,6 +25,7 @@ GoogleService-Info.plist
 android
 ios
 .env
+*.aab*
 
 # debug
 npm-debug.*
