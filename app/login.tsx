@@ -43,12 +43,6 @@ const SignIn = () => {
       password: values?.password,
     });
     if (error) {
-      // Alert.alert(error?.message);
-      // Toast.show(error?.message, {
-      //   duration: Toast.durations.LONG,
-      //   position: Toast.positions.TOP,
-      //   backgroundColor: Colors.red,
-      // });
       console.log("Logging in error", error?.message);
       setErrorMessage(
         error?.message === "Invalid login credentials"

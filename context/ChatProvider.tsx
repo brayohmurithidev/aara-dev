@@ -2,9 +2,6 @@ import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { StreamChat } from "stream-chat";
 import { Chat, OverlayProvider, Streami18n } from "stream-chat-expo";
-import { ImageBackground } from "expo-image";
-import { splashImage } from "@/constants/images";
-import { ActivityIndicator } from "react-native";
 import * as Notifications from "expo-notifications";
 import { tokenProvider } from "@/utils/tokenProvider";
 
@@ -15,42 +12,80 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   const i18nInstance = new Streami18n();
 
   useEffect(() => {
-    if (!user) return;
+    const initializeChatClient = async () => {
+      if (!user) return;
 
-    const connect = async () => {
-      if (!clientRef.current) {
-        // Initialize the client only once
-        const client = StreamChat.getInstance(
-          process.env.EXPO_PUBLIC_STREAM_API_KEY || "",
+      try {
+        if (!clientRef.current) {
+          // Create a StreamChat instance only once
+          const client = StreamChat.getInstance(
+            process.env.EXPO_PUBLIC_STREAM_API_KEY || "",
+          );
+          clientRef.current = client;
+        }
+
+        if (!clientRef.current.userID) {
+          // Connect the user if not already connected
+          await clientRef.current.connectUser(
+            {
+              id: user.id,
+              name: user.name,
+              image: user?.profile_image,
+            },
+            tokenProvider,
+          );
+        }
+
+        setChatClient(clientRef.current);
+      } catch (error) {
+        console.error("Failed to initialize Stream Chat client:", error);
+        Alert.alert(
+          "Chat Error",
+          "Unable to connect to the chat service. Please try again later.",
         );
-        clientRef.current = client;
       }
-
-      if (!clientRef.current.userID) {
-        // Connect user only if not already connected
-        await clientRef.current.connectUser(
-          {
-            id: user.id,
-            name: user.name,
-            image: user?.profile_image,
-          },
-          tokenProvider,
-        );
-      }
-
-      setChatClient(clientRef.current);
     };
 
-    connect();
+    initializeChatClient();
+
+    // const connect = async () => {
+    //   if (!clientRef.current) {
+    //     // Initialize the client only once
+    //     const client = StreamChat.getInstance(
+    //       process.env.EXPO_PUBLIC_STREAM_API_KEY || "",
+    //     );
+    //     clientRef.current = client;
+    //   }
+    //
+    //   if (!clientRef.current.userID) {
+    //     // Connect user only if not already connected
+    //     await clientRef.current.connectUser(
+    //       {
+    //         id: user.id,
+    //         name: user.name,
+    //         image: user?.profile_image,
+    //       },
+    //       tokenProvider,
+    //     );
+    //   }
+    //
+    //   setChatClient(clientRef.current);
+    // };
+
+    // connect();
 
     return () => {
       if (clientRef.current) {
-        clientRef.current.disconnectUser();
+        clientRef.current
+          .disconnectUser()
+          .catch((err) =>
+            console.error("Error disconnecting Stream Chat client:", err),
+          );
         clientRef.current = null;
       }
       setChatClient(null);
     };
-  }, [user]);
+  }, [user, tokenProvider]);
 
   useEffect(() => {
     const handleNewMessage = async (event: any) => {
@@ -81,22 +116,23 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
     };
   }, [chatClient]);
 
-  if (!chatClient || !user) {
-    return (
-      <ImageBackground
-        source={splashImage}
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      >
-        <ActivityIndicator size="large" />
-      </ImageBackground>
-    );
-  }
+  // if (!chatClient) {
+  //   return (
+  //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <OverlayProvider>
-      <Chat client={chatClient} i18nInstance={i18nInstance}>
-        {children}
-      </Chat>
+      {!chatClient ? (
+        children
+      ) : (
+        <Chat client={chatClient} i18nInstance={i18nInstance}>
+          {children}
+        </Chat>
+      )}
     </OverlayProvider>
   );
 };

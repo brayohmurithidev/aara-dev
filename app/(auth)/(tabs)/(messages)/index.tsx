@@ -6,6 +6,7 @@ import { router } from "expo-router";
 
 const Messages = () => {
   const { user } = useAuth();
+
   return (
     <ChannelList
       filters={{ members: { $in: [user?.id] } }}

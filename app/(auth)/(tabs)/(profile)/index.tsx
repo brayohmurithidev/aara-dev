@@ -154,6 +154,8 @@ const UserProfile = () => {
             showsVerticalScrollIndicator={false}
           >
             <ImageBackground
+              placeholder={{ workoutLadies }}
+              transition={1000}
               source={
                 user?.profile_image
                   ? { uri: user?.profile_image }

@@ -5,6 +5,7 @@ import CustomTabBar from "@/components/CustomTabBar.tsx";
 
 const TabsLayout = () => {
   return (
+    // <ChatProvider
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
