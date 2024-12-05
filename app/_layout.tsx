@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 import { DefaultTheme, PaperProvider } from "react-native-paper";
 import configureFonts from "react-native-paper/src/styles/fonts.tsx";
-import * as SplashScreen from "expo-splash-screen";
+import BootSplash from "react-native-bootsplash";
 
 const queryClient = new QueryClient();
 
@@ -58,13 +58,6 @@ const customTheme = {
   fonts: configureFonts({ config: fontConfig }),
 };
 
-SplashScreen.preventAutoHideAsync();
-
-SplashScreen.setOptions({
-  duration: 1000,
-  fade: true,
-});
-
 const InitialLayout = () => {
   const { session, initialized } = useAuth();
 
@@ -72,10 +65,11 @@ const InitialLayout = () => {
     if (!initialized) return;
     if (!session) {
       router.replace("/");
-      SplashScreen.hideAsync();
     } else if (session?.user) {
       router.replace("/(auth)/(tabs)/");
-      SplashScreen.hideAsync();
+    }
+    if (initialized && (session || !session)) {
+      BootSplash.hide({ fade: true });
     }
   }, [initialized, session]);
 

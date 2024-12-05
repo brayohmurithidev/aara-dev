@@ -7,8 +7,15 @@
     "icon": "./assets/images/icon.png",
     "scheme": "aara-dev",
     "userInterfaceStyle": "automatic",
+    "autolinking": {
+      "exclude": [
+        "expo-splash-screen"
+      ]
+    },
     "newArchEnabled": true,
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "space.aara.aara"
@@ -30,7 +37,9 @@
       [
         "expo-font",
         {
-          "fonts": ["assets/fonts/WorkSans-Regular.ttf"]
+          "fonts": [
+            "assets/fonts/WorkSans-Regular.ttf"
+          ]
         }
       ],
       [
@@ -45,16 +54,7 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
-
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#E3F1B0",
-          "image": "./assets/images/splash.png",
-          "imageWidth": 500,
-          "enableFullScreenImage_legacy": true
-        }
-      ]
+      ["react-native-bootsplash", { "assetsDir": "assets/bootsplash" }]
     ],
     "experiments": {
       "typedRoutes": true
