@@ -388,17 +388,17 @@ const PartnerPreferences = () => {
                 onPress={handleSubmit}
                 mode="contained"
                 // @ts-ignore
-                disabled={
-                  city === "" ||
-                  radius === "" ||
-                  gender === "" ||
-                  fitnessLevel === "" ||
-                  availability.length === 0 ||
-                  workoutType === "" ||
-                  workoutStyle === "" ||
-                  workoutGoal === "" ||
-                  isLoading
-                }
+                // disabled={
+                //   city === "" ||
+                //   radius === "" ||
+                //   gender === "" ||
+                //   fitnessLevel === "" ||
+                //   availability.length === 0 ||
+                //   workoutType === "" ||
+                //   workoutStyle === "" ||
+                //   workoutGoal === "" ||
+                //   isLoading
+                // }
                 icon="arrow-right"
               >
                 Next

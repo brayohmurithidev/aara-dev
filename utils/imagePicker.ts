@@ -5,17 +5,17 @@ import { Alert } from "react-native";
 export const pickImage = async () => {
   try {
     //     Ask for camera roll permission
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Permission denied",
-        "You need to grant camera permission to select your image",
-      );
-      return null;
-    }
+    // const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    // if (status !== "granted") {
+    //   Alert.alert(
+    //     "Permission denied",
+    //     "You need to grant camera permission to select your image",
+    //   );
+    //   return null;
+    // }
     //     Open image picker
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images, //allow only images
+      mediaTypes: ["images"], //allow only images
       allowsEditing: true, // allow crop e.t.c
       aspect: [4, 3],
       quality: 1, // best quality

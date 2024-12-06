@@ -8,14 +8,10 @@
     "scheme": "aara-dev",
     "userInterfaceStyle": "automatic",
     "autolinking": {
-      "exclude": [
-        "expo-splash-screen"
-      ]
+      "exclude": ["expo-splash-screen"]
     },
     "newArchEnabled": true,
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "space.aara.aara"
@@ -34,12 +30,17 @@
     },
     "plugins": [
       "expo-router",
+      ["react-native-bootsplash", { "assetsDir": "assets/bootsplash" }],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
       [
         "expo-font",
         {
-          "fonts": [
-            "assets/fonts/WorkSans-Regular.ttf"
-          ]
+          "fonts": ["assets/fonts/WorkSans-Regular.ttf"]
         }
       ],
       [
@@ -53,8 +54,7 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
-      ],
-      "react-native-bootsplash"
+      ]
     ],
     "experiments": {
       "typedRoutes": true

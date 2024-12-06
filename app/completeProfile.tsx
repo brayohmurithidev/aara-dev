@@ -437,11 +437,11 @@ const CompleteProfile = () => {
                     mode="contained"
                     onPress={handleSubmit}
                     buttonTextStyles={{ fontSize: 18 }}
-                    disabled={
-                      gender === "" ||
-                      weight.value === "" ||
-                      height.value === ""
-                    }
+                    // disabled={
+                    //   gender === "" ||
+                    //   weight.value === "" ||
+                    //   height.value === ""
+                    // }
                     icon="arrow-right"
                   >
                     Next

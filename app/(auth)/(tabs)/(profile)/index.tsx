@@ -1,6 +1,6 @@
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
-import React from "react";
-import { ImageBackground } from "expo-image";
+import React, { useState } from "react";
+import { Image } from "expo-image";
 import { Colors } from "@/constants/Colors.ts";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -12,6 +12,8 @@ import { supabase } from "@/config/initSupabase.ts";
 import { profileAvatar, workoutLadies } from "@/constants/images.ts";
 import * as Location from "expo-location";
 import { Avatar, Button, Text } from "react-native-paper";
+import { uploadImageAndStoreURL } from "@/config/supabase_service.ts";
+import Toast from "react-native-root-toast";
 
 const getGymsNearby = async () => {
   // Fetch user's location and nearby gyms
@@ -75,6 +77,10 @@ export const calculateAgeFromDate = (birthday) => {
 
 const UserProfile = () => {
   const { user: currentUser, signOut } = useAuth();
+  const [uploading, setUploading] = useState(false);
+  const [uploadingProfile, setUploadingProfile] = useState(false);
+  const [coverImage, setCoverImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   // const { data: friends } = useGetFriends(currentUser?.id);
 
@@ -97,9 +103,84 @@ const UserProfile = () => {
     queryFn: async () => fetchFriendsList(currentUser?.id),
   });
 
+  // PROFILE IMAGE UPDATE
+  const handleUploadProfileImage = async () => {
+    try {
+      const image = await pickImage();
+      setUploadingProfile(true);
+      if (image) {
+        setProfileImage(image?.assets[0].uri);
+        const initialFilename = image?.assets[0]?.uri?.split("/").pop();
+        const fileName = `cover-${initialFilename}`;
+
+        const imageUrl: string | null = await uploadImageAndStoreURL(
+          image?.assets[0].uri,
+          fileName,
+        );
+        if (imageUrl) {
+          // setFieldValue("cover_image", imageUrl);
+          setProfileImage(imageUrl);
+          const { data, error } = await supabase
+            .from("profiles")
+            .update({
+              profile_image: coverImage,
+            })
+            .eq("id", user?.id);
+          if (error) throw error;
+        }
+      } else {
+        console.log("No image");
+      }
+    } catch (error) {
+      console.error("Upload error", error);
+      Toast.show("Upload error", {
+        duration: Toast.durations.LONG,
+        backgroundColor: Colors.red,
+        position: Toast.positions.TOP,
+      });
+    } finally {
+      setUploadingProfile(false);
+    }
+  };
+
+  // COVER IMAGE UPDATE
   const handleUploadCoverImage = async () => {
-    const res = await pickImage();
-    console.log(res);
+    try {
+      const image = await pickImage();
+      setUploading(true);
+      if (image) {
+        setCoverImage(image?.assets[0].uri);
+        const initialFilename = image?.assets[0]?.uri?.split("/").pop();
+        const fileName = `profile-${initialFilename}`;
+
+        const imageUrl: string | null = await uploadImageAndStoreURL(
+          image?.assets[0].uri,
+          fileName,
+        );
+        if (imageUrl) {
+          // setFieldValue("cover_image", imageUrl);
+          setCoverImage(imageUrl);
+          const { data, error } = await supabase
+            .from("profiles")
+            .update({
+              cover_image: coverImage,
+            })
+            .eq("id", user?.id);
+          if (error) throw error;
+        }
+      } else {
+        console.log("No image");
+      }
+    } catch (error) {
+      console.error("Upload error", error);
+      Toast.show("Upload error", {
+        duration: Toast.durations.LONG,
+        backgroundColor: Colors.red,
+        position: Toast.positions.TOP,
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   if (friends) {
@@ -153,16 +234,15 @@ const UserProfile = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
           >
-            <ImageBackground
-              placeholder={{ workoutLadies }}
-              transition={1000}
-              source={
-                user?.profile_image
-                  ? { uri: user?.profile_image }
-                  : workoutLadies
-              }
-              style={{ width: "100%", height: 285 }}
-            >
+            <View style={{ width: "100%", height: 285 }}>
+              <Image
+                placeholder={{ workoutLadies }}
+                transition={1000}
+                source={
+                  user?.cover_image ? { uri: user?.cover_image } : workoutLadies
+                }
+                style={{ width: "100%", height: "100%" }}
+              />
               <TouchableOpacity
                 onPress={handleUploadCoverImage}
                 style={{
@@ -179,7 +259,18 @@ const UserProfile = () => {
               >
                 <Ionicons name="camera" size={26} />
               </TouchableOpacity>
-            </ImageBackground>
+              {uploading && (
+                <ActivityIndicator
+                  size="large"
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: [{ translateX: -25 }, { translateY: -25 }],
+                  }}
+                />
+              )}
+            </View>
 
             <View style={{ paddingHorizontal: 16, position: "relative" }}>
               <View
@@ -207,6 +298,7 @@ const UserProfile = () => {
                 />
 
                 <TouchableOpacity
+                  onPress={handleUploadProfileImage}
                   style={{
                     width: 40,
                     height: 40,
@@ -221,6 +313,17 @@ const UserProfile = () => {
                 >
                   <Ionicons name="camera" size={26} />
                 </TouchableOpacity>
+                {uploadingProfile && (
+                  <ActivityIndicator
+                    size="large"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: [{ translateX: -25 }, { translateY: -25 }],
+                    }}
+                  />
+                )}
               </View>
               <View style={{ position: "absolute", right: 10, top: 10 }}>
                 <Button

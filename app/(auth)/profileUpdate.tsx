@@ -34,10 +34,13 @@ const ProfileUpdate = () => {
   const { user: currentUser } = useAuth();
   const [visibility, setVisibility] = useState(false);
   const [profileURL, setProfileURL] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
   const [initialValues, setInitialValues] = useState({
     profile_image: null,
+    cover_image: null,
     name: "",
     bio: "",
     city: "",
@@ -51,8 +54,8 @@ const ProfileUpdate = () => {
   // IMAGE UPLOAD
   const handleImageUpload = async (setFieldValue) => {
     try {
-      setIsUploading(true);
       const image = await pickImage();
+      setIsUploading(true);
       if (image) {
         setFieldValue("profile_image", image?.assets[0].uri);
         const initialFilename = image?.assets[0]?.uri?.split("/").pop();
@@ -76,12 +79,44 @@ const ProfileUpdate = () => {
     }
   };
 
+  // HANDLE COVER IMAGE UPLOAD
+  const handleCoverImageUpload = async (setFieldValue) => {
+    try {
+      const image = await pickImage();
+      setUploadingCover(true);
+      if (image) {
+        setFieldValue("cover_image", image?.assets[0].uri);
+        const initialFilename = image?.assets[0]?.uri?.split("/").pop();
+        const fileName = `cover-${initialFilename}`;
+
+        const imageUrl: string | null = await uploadImageAndStoreURL(
+          image?.assets[0].uri,
+          fileName,
+        );
+        if (imageUrl) {
+          setFieldValue("cover_image", imageUrl);
+          setCoverImage(imageUrl);
+        }
+      } else {
+        console.log("No image");
+      }
+    } catch (error) {
+      console.error("Upload error", error);
+    } finally {
+      setUploadingCover(false);
+    }
+  };
+
   const handleSubmit = async (userData: any) => {
     setLoading(true);
     try {
       const { error } = await supabase
         .from("profiles")
-        .update({ ...userData, profile_image: profileURL })
+        .update({
+          ...userData,
+          profile_image: profileURL,
+          cover_image: coverImage,
+        })
         .eq("id", user?.id);
       if (error) {
         console.error("Error saving user data: ", error);
@@ -140,6 +175,7 @@ const ProfileUpdate = () => {
       setInitialValues({
         ...initialValues,
         profile_image: user.profile_image || null,
+        cover_image: user?.cover_image || null,
         availability: user.availability || [],
         city: user.city || "",
         workout_style: user.workoutStyle || "",
@@ -170,6 +206,7 @@ const ProfileUpdate = () => {
             handleSubmit,
             values: {
               profile_image,
+              cover_image,
               bio,
               city,
               workout_style,
@@ -216,8 +253,10 @@ const ProfileUpdate = () => {
                 Use your most recent photos
               </Text>
               <View style={{ flexDirection: "row", gap: 24, marginBottom: 28 }}>
-                {profile_image && (
-                  <View style={styles.addProfileCard}>
+                {profile_image ? (
+                  <View
+                    style={[styles.addProfileCard, { position: "relative" }]}
+                  >
                     <Image
                       source={{ uri: user?.photoURL || profile_image }}
                       style={{ width: "100%", height: "100%", borderRadius: 8 }}
@@ -234,17 +273,104 @@ const ProfileUpdate = () => {
                         }}
                       />
                     )}
+                    {
+                      <Button
+                        mode="contained"
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          width: "100%",
+                        }}
+                        onPress={() => handleImageUpload(setFieldValue)}
+                      >
+                        Update Profile
+                      </Button>
+                    }
                   </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => handleImageUpload(setFieldValue)}
+                    style={[
+                      styles.addProfileCard,
+                      { alignItems: "center", justifyContent: "center" },
+                    ]}
+                  >
+                    <Feather name="plus" size={32} />
+                    <Text>Add Profile picture</Text>
+                  </TouchableOpacity>
                 )}
-                <TouchableOpacity
-                  onPress={() => handleImageUpload(setFieldValue)}
-                  style={[
-                    styles.addProfileCard,
-                    { alignItems: "center", justifyContent: "center" },
-                  ]}
-                >
-                  <Feather name="plus" size={32} />
-                </TouchableOpacity>
+                {cover_image ? (
+                  <View
+                    style={[styles.addProfileCard, { position: "relative" }]}
+                  >
+                    <Image
+                      source={{ uri: user?.cover_image || cover_image }}
+                      style={{ width: "100%", height: "100%", borderRadius: 8 }}
+                      contentFit="cover"
+                    />
+                    {uploadingCover && (
+                      <ActivityIndicator
+                        size="large"
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: [{ translateX: -25 }, { translateY: -25 }],
+                        }}
+                      />
+                    )}
+                    {
+                      <Button
+                        mode="contained"
+                        style={{ position: "absolute", bottom: 0 }}
+                        onPress={() => handleCoverImageUpload(setFieldValue)}
+                      >
+                        Update Cover Image
+                      </Button>
+                    }
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => handleCoverImageUpload(setFieldValue)}
+                    style={[
+                      styles.addProfileCard,
+                      { alignItems: "center", justifyContent: "center" },
+                    ]}
+                  >
+                    <Feather name="plus" size={32} />
+                    <Text>Add Cover picture</Text>
+                  </TouchableOpacity>
+                )}
+
+                {/*{profile_image && (*/}
+                {/*  <View style={styles.addProfileCard}>*/}
+                {/*    <Image*/}
+                {/*      source={{ uri: user?.photoURL || profile_image }}*/}
+                {/*      style={{ width: "100%", height: "100%", borderRadius: 8 }}*/}
+                {/*      contentFit="cover"*/}
+                {/*    />*/}
+                {/*    {isUploading && (*/}
+                {/*      <ActivityIndicator*/}
+                {/*        size="large"*/}
+                {/*        style={{*/}
+                {/*          position: "absolute",*/}
+                {/*          top: "50%",*/}
+                {/*          left: "50%",*/}
+                {/*          transform: [{ translateX: -25 }, { translateY: -25 }],*/}
+                {/*        }}*/}
+                {/*      />*/}
+                {/*    )}*/}
+                {/*  </View>*/}
+                {/*)}*/}
+                {/*<TouchableOpacity*/}
+                {/*  onPress={() => handleImageUpload(setFieldValue)}*/}
+                {/*  style={[*/}
+                {/*    styles.addProfileCard,*/}
+                {/*    { alignItems: "center", justifyContent: "center" },*/}
+                {/*  ]}*/}
+                {/*>*/}
+                {/*  <Feather name="plus" size={32} />*/}
+                {/*</TouchableOpacity>*/}
               </View>
               <Text variant="titleSmall" style={{ marginBottom: 10 }}>
                 Name

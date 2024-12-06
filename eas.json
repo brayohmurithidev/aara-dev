@@ -12,6 +12,13 @@
       "distribution": "internal",
       "android":{
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_STREAM_API_KEY": "y7gazf7juyr4",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://idcqhvyfdyplxivwmbea.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkY3FodnlmZHlwbHhpdndtYmVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk2Mzg4ODIsImV4cCI6MjA0NTIxNDg4Mn0._tGpZ6Yi_o-s0R27dUdlwuCF_kcI6jyFJuk2wiSYnw8",
+        "EXPO_PUBLIC_GOOGLE_KEY":"AIzaSyBhL-Z6BfWP9teKp_S2Cd4lXaPgAZkA0Wk",
+        "GOOGLE_SERVICES_JSON": "./google-services.json"
       }
     },
     "production": {
@@ -19,6 +26,8 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+
+    }
   }
 }
