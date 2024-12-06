@@ -111,7 +111,7 @@ const UserProfile = () => {
       if (image) {
         setProfileImage(image?.assets[0].uri);
         const initialFilename = image?.assets[0]?.uri?.split("/").pop();
-        const fileName = `cover-${initialFilename}`;
+        const fileName = `profile-${initialFilename}`;
 
         const imageUrl: string | null = await uploadImageAndStoreURL(
           image?.assets[0].uri,
@@ -123,7 +123,7 @@ const UserProfile = () => {
           const { data, error } = await supabase
             .from("profiles")
             .update({
-              profile_image: coverImage,
+              profile_image: imageUrl,
             })
             .eq("id", user?.id);
           if (error) throw error;
@@ -289,9 +289,11 @@ const UserProfile = () => {
               >
                 <Avatar.Image
                   source={
-                    user?.profile_image
-                      ? { uri: user?.profile_image }
-                      : profileAvatar
+                    profileImage
+                      ? { uri: profileImage }
+                      : user?.profile_image
+                        ? { uri: user?.profile_image }
+                        : profileAvatar
                   }
                   // style={{ borderRadius: 100 }}
                   size={100}

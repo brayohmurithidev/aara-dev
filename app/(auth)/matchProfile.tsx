@@ -11,7 +11,7 @@ import { ImageBackground } from "expo-image";
 import { profileAvatar, workoutLadies } from "@/constants/images.ts";
 import { StatusBar } from "expo-status-bar";
 import { Link, router, useLocalSearchParams } from "expo-router";
-// import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/index.tsx";
+// import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/entry.tsx";
 import { FlashList } from "@shopify/flash-list";
 import FitnessSpots from "@/components/fitnessSpots.tsx";
 import { supabase } from "@/config/initSupabase.ts";

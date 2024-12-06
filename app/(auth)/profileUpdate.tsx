@@ -109,13 +109,19 @@ const ProfileUpdate = () => {
 
   const handleSubmit = async (userData: any) => {
     setLoading(true);
+    let uploadData = {};
+    if (profileURL) {
+      uploadData = { ...uploadData, profile_image: profileURL };
+    }
+    if (coverImage) {
+      uploadData = { ...uploadData, cover_image: coverImage };
+    }
     try {
       const { error } = await supabase
         .from("profiles")
         .update({
           ...userData,
-          profile_image: profileURL,
-          cover_image: coverImage,
+          ...uploadData,
         })
         .eq("id", user?.id);
       if (error) {
@@ -304,7 +310,7 @@ const ProfileUpdate = () => {
                     style={[styles.addProfileCard, { position: "relative" }]}
                   >
                     <Image
-                      source={{ uri: user?.cover_image || cover_image }}
+                      source={{ uri: cover_image }}
                       style={{ width: "100%", height: "100%", borderRadius: 8 }}
                       contentFit="cover"
                     />
@@ -322,7 +328,11 @@ const ProfileUpdate = () => {
                     {
                       <Button
                         mode="contained"
-                        style={{ position: "absolute", bottom: 0 }}
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          width: "100%",
+                        }}
                         onPress={() => handleCoverImageUpload(setFieldValue)}
                       >
                         Update Cover Image
@@ -480,19 +490,23 @@ const ProfileUpdate = () => {
               </TouchableOpacity>
               <Button
                 onPress={handleSubmit}
+                mode="contained"
                 title={"Complete Profile"}
-                disabled={
-                  loading ||
-                  name === "" ||
-                  name === undefined ||
-                  bio === "" ||
-                  bio === undefined ||
-                  city === "" ||
-                  workout_style === "" ||
-                  preferences?.length === 0 ||
-                  availability?.length === 0 ||
-                  prompt?.length === 0
-                }
+                style={{
+                  marginBottom: 16,
+                }}
+                // disabled={
+                //   loading ||
+                //   name === "" ||
+                //   name === undefined ||
+                //   bio === "" ||
+                //   bio === undefined ||
+                //   city === "" ||
+                //   workout_style === "" ||
+                //   preferences?.length === 0 ||
+                //   availability?.length === 0 ||
+                //   prompt?.length === 0
+                // }
               >
                 Complete Profile
               </Button>

@@ -59,12 +59,12 @@ const customTheme = {
 };
 
 const InitialLayout = () => {
-  const { session, initialized } = useAuth();
+  const { session, initialized, user } = useAuth();
 
   useEffect(() => {
     if (!initialized) return;
     if (!session) {
-      router.replace("/");
+      router.replace("/entry");
     } else if (session?.user) {
       router.replace("/(auth)/(tabs)/");
     }
@@ -73,7 +73,7 @@ const InitialLayout = () => {
     }
   }, [initialized, session]);
 
-  return <Slot />;
+  return <Slot initialRouteName="entry" />;
 };
 
 const RootLayout = () => {

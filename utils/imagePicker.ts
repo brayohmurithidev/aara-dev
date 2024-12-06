@@ -19,6 +19,7 @@ export const pickImage = async () => {
       allowsEditing: true, // allow crop e.t.c
       aspect: [4, 3],
       quality: 1, // best quality
+      legacy: true,
       // base64: true,
     });
 
