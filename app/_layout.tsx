@@ -1,14 +1,14 @@
-import { router, Slot } from "expo-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider, useAuth } from "@/context/AuthProvider.tsx";
-import { RootSiblingParent } from "react-native-root-siblings";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect } from "react";
-import { useFonts } from "expo-font";
-import { FontAwesome } from "@expo/vector-icons";
-import { DefaultTheme, PaperProvider } from "react-native-paper";
-import configureFonts from "react-native-paper/src/styles/fonts.tsx";
+import {useFonts} from "expo-font";
+import {Slot} from "expo-router";
+import {ReactNode, useEffect} from "react";
+import "react-native-reanimated";
 import BootSplash from "react-native-bootsplash";
+import {AuthProvider} from "@/context/AuthProvider.tsx";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {RootSiblingParent} from "react-native-root-siblings";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
+import {configureFonts, DefaultTheme, PaperProvider} from "react-native-paper";
+import {StatusBar} from "expo-status-bar";
 
 const queryClient = new QueryClient();
 
@@ -58,48 +58,36 @@ const customTheme = {
   fonts: configureFonts({ config: fontConfig }),
 };
 
-const InitialLayout = () => {
-  const { session, initialized, user } = useAuth();
 
-  useEffect(() => {
-    if (!initialized) return;
-    if (!session) {
-      router.replace("/entry");
-    } else if (session?.user) {
-      router.replace("/(auth)/(tabs)/");
-    }
-    if (initialized && (session || !session)) {
-      BootSplash.hide({ fade: true });
-    }
-  }, [initialized, session]);
 
-  return <Slot initialRouteName="entry" />;
-};
+export default function RootLayout(): ReactNode {
 
-const RootLayout = () => {
-  const [loaded, error] = useFonts({
-    "WorkSans-Regular": require("../assets/fonts/WorkSans-Regular.ttf"),
-    ...FontAwesome.font,
+  const [loaded] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (loaded) {
+      BootSplash.hide({ fade: true });
+    }
+  }, [loaded]);
 
-  if (!loaded) return null;
+  if (!loaded) {
+    return null;
+  }
+
   return (
-    <RootSiblingParent>
-      <GestureHandlerRootView>
-        <PaperProvider theme={customTheme}>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <InitialLayout />
-            </AuthProvider>
-          </QueryClientProvider>
-        </PaperProvider>
-      </GestureHandlerRootView>
-    </RootSiblingParent>
+      <RootSiblingParent>
+        <GestureHandlerRootView>
+          <PaperProvider theme={customTheme}>
+            <QueryClientProvider client={queryClient}>
+              <AuthProvider>
+                <Slot />
+                <StatusBar />
+              </AuthProvider>
+            </QueryClientProvider>
+          </PaperProvider>
+        </GestureHandlerRootView>
+      </RootSiblingParent>
   );
-};
-
-export default RootLayout;
+}

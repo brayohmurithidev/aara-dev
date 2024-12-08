@@ -1,12 +1,7 @@
-import { Session, User } from "@supabase/supabase-js";
-import {
-    createContext,
-    PropsWithChildren,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
-import { supabase } from "@/config/initSupabase";
+import {Session, User} from "@supabase/supabase-js";
+import {createContext, PropsWithChildren, useContext, useEffect, useState,} from "react";
+import {supabase} from "@/config/initSupabase";
+import {router} from "expo-router";
 
 type AuthProps = {
     user: User | null;
@@ -94,6 +89,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         await supabase.auth.signOut();
         setUser(null);
         setSession(null);
+        router.replace("/entry")
     };
 
     const value = {

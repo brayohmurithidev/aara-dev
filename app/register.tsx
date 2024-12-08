@@ -1,25 +1,16 @@
-import {
-  Alert,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Formik } from "formik";
-import { Colors } from "@/constants/Colors.ts";
-import { Link, router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import {Alert, KeyboardAvoidingView, ScrollView, StyleSheet, View,} from "react-native";
+import React, {useEffect, useState} from "react";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {Formik} from "formik";
+import {Colors} from "@/constants/Colors.ts";
+import {Link, router} from "expo-router";
+import {StatusBar} from "expo-status-bar";
 import * as Yup from "yup";
-import { supabase } from "@/config/initSupabase.ts";
+import {supabase} from "@/config/initSupabase.ts";
 import Toast from "react-native-root-toast";
-import {
-  getDataFromAsyncStorage,
-  storeToAsyncStorage,
-} from "@/utils/asyncStore.ts";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { Button, Checkbox, Text, TextInput } from "react-native-paper";
+import {getDataFromAsyncStorage, storeToAsyncStorage,} from "@/utils/asyncStore.ts";
+import {GoogleSignin} from "@react-native-google-signin/google-signin";
+import {Button, Checkbox, Text, TextInput} from "react-native-paper";
 
 GoogleSignin.configure({
   webClientId:
@@ -132,7 +123,7 @@ const SignUp = () => {
         <Text variant="titleLarge" style={styles.title}>
           Create an Account
         </Text>
-        <Text variant="titleLarge" style={{ marginTop: 10, marginBottom: 24 }}>
+        <Text variant="titleSmall" style={{ marginTop: 10, marginBottom: 24 }}>
           Join us and start your fitness journey today!
         </Text>
         <Formik
@@ -152,7 +143,7 @@ const SignUp = () => {
           }) => (
             <>
               <View style={styles.formControl}>
-                <Text variant="titleMedium" style={styles.inputText}>
+                <Text variant="titleSmall" style={styles.inputText}>
                   Enter full name
                 </Text>
                 <TextInput
@@ -167,7 +158,7 @@ const SignUp = () => {
                 )}
               </View>
               <View style={styles.formControl}>
-                <Text variant="titleMedium" style={styles.inputText}>
+                <Text variant="titleSmall" style={styles.inputText}>
                   Enter Email
                 </Text>
                 <TextInput
@@ -182,7 +173,7 @@ const SignUp = () => {
                 )}
               </View>
               <View style={styles.formControl}>
-                <Text variant="titleMedium" style={styles.inputText}>
+                <Text variant="titleSmall" style={styles.inputText}>
                   Create Password
                 </Text>
                 <TextInput
@@ -293,7 +284,7 @@ const SignUp = () => {
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text>Don't have an account? </Text>
                 <Link href="/login">
-                  <Text variant="titleSmall">Login</Text>
+                  <Text variant="bodyMedium" style={{textDecorationLine: "underline", textDecorationColor: Colors.ecru800, color:Colors.ecru800}}>Login</Text>
                 </Link>
               </View>
             </>

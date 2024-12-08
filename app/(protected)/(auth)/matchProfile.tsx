@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { Platform, StyleSheet, View } from "react-native";
-import { Colors } from "@/constants/Colors.ts";
+import React, {useEffect, useState} from "react";
+import {SafeAreaView, useSafeAreaInsets,} from "react-native-safe-area-context";
+import {Platform, StyleSheet, View} from "react-native";
+import {Colors} from "@/constants/Colors.ts";
 import BackButton from "@/components/backButton.tsx";
-import { Feather } from "@expo/vector-icons";
-import { ImageBackground } from "expo-image";
-import { profileAvatar, workoutLadies } from "@/constants/images.ts";
-import { StatusBar } from "expo-status-bar";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import {Feather} from "@expo/vector-icons";
+import {ImageBackground} from "expo-image";
+import {profileAvatar, workoutLadies} from "@/constants/images.ts";
+import {StatusBar} from "expo-status-bar";
+import {Link, router, useLocalSearchParams} from "expo-router";
 // import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/entry.tsx";
-import { FlashList } from "@shopify/flash-list";
+import {FlashList} from "@shopify/flash-list";
 import FitnessSpots from "@/components/fitnessSpots.tsx";
-import { supabase } from "@/config/initSupabase.ts";
+import {supabase} from "@/config/initSupabase.ts";
 import Toast from "react-native-root-toast";
-import { useAuth } from "@/context/AuthProvider.tsx";
+import {useAuth} from "@/context/AuthProvider.tsx";
 import * as Location from "expo-location";
-import { Avatar, Button, Text } from "react-native-paper";
-import { calculateAgeFromDate } from "@/app/(auth)/(tabs)/(profile)/index.tsx";
+import {Avatar, Button, Text} from "react-native-paper";
+import {calculateAgeFromDate} from "@/app/(protected)/(auth)/(tabs)/(profile)/index.tsx";
 
 const getGymsNearby = async () => {
   // Fetch user's location and nearby gyms

@@ -1,23 +1,18 @@
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import React, { useState } from "react";
-import { Image } from "expo-image";
+import {KeyboardAvoidingView, ScrollView, StyleSheet, View,} from "react-native";
+import React, {useState} from "react";
+import {Image} from "expo-image";
 
-import { StatusBar } from "expo-status-bar";
-import { Formik } from "formik";
-import { Link } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {StatusBar} from "expo-status-bar";
+import {Formik} from "formik";
+import {Link, router} from "expo-router";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 import * as Yup from "yup";
-import { Button, Portal, Snackbar, Text, TextInput } from "react-native-paper";
-import { monoBlack } from "@/constants/images";
-import { Colors } from "@/constants/Colors";
+import {Button, Portal, Snackbar, Text, TextInput} from "react-native-paper";
+import {monoBlack} from "@/constants/images";
+import {Colors} from "@/constants/Colors";
 import Divider from "@/components/divider";
-import { supabase } from "@/config/initSupabase.ts";
+import {supabase} from "@/config/initSupabase.ts";
 import GoogleLogin from "@/components/GoogleLogin.tsx";
 
 const validationSchema = Yup.object({
@@ -51,6 +46,7 @@ const SignIn = () => {
       );
     }
     setLoading(false);
+    router.replace('/(tabs)')
   };
 
   return (
